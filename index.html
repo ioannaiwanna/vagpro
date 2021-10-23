@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>msg App</title>
+  </head>
+  <body>
+    <div id="app">MESSAGE APP</div>
+
+    <button id="btn">click me</button>
+    <script type="text/javascript">
+      function loadXMLDoc() {
+        var xmlhttp = new XMLHttpRequest();
+
+        xmlhttp.onreadystatechange = function () {
+          if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+            // XMLHttpRequest.DONE == 4
+            if (xmlhttp.status == 200) {
+              const resp = JSON.parse(xmlhttp.responseText);
+              console.log(resp);
+
+              resp.forEach(function (r, i) {
+                const msg = document.createElement("div");
+                const dlt = document.createElement("button");
+                const edit = document.createElement("button");
+                const create = document.createElement("button");
+
+                msg.innerHTML = ` ${resp[i].comment} `;
+                dlt.innerHTML = "Delete";
+                edit.innerHTML = "Edit";
+                create.innerHTML = "Create";
+
+                app.append(msg);
+                msg.append(dlt);
+                msg.append(edit);
+                msg.append(create);
+
+                dlt.addEventListener("click", () => {
+                  msg.id = `mes${[i]}`;
+                  dlt.id = `mes${i}`;
+                  if (msg.id === dlt.id) {
+                    msg.remove();
+                  }
+                });
+              });
+            } else if (xmlhttp.status == 400) {
+              alert("There was an error 400");
+            } else {
+              alert("something else other than 200 was returned");
+            }
+          }
+        };
+
+        xmlhttp.open("GET", "http://localhost:3000/comments", true);
+        xmlhttp.send();
+      }
+
+      const btn = document.getElementById("btn");
+      btn.addEventListener("click", loadXMLDoc);
+    </script>
+  </body>
+</html>
