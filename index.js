@@ -24,6 +24,10 @@ app.get("/comments", function (req, res) {
   res.json(database.list());
 });
 
+app.get('/', function(req,res) {
+  res.sendFile(__dirname + '/index.html');
+});
+
 app.listen(3000, function () {
   console.log("Comments server listening on port 3000!");
 });
